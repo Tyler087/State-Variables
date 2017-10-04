@@ -1,3 +1,9 @@
+//States used to determine which scence when mouse if pressed in a quadrant, it also allows you to press the 'r' key to go back to the start screen
+//Extra for experts in using a PImage variable
+
+//Tyler Smith
+
+
 
 int state = 0;
 float snowX = random(0,400);
@@ -5,7 +11,8 @@ float snowY = random(400,800);
 PImage sun;
 PImage moon;
 PImage snowflake;
-PImage hockeystick;
+PImage star;
+float mouseColor = mouseX;
 
 
 void setup() {
@@ -15,7 +22,7 @@ void setup() {
   sun = loadImage("sun.png");
   moon = loadImage("moon.png");
   snowflake = loadImage("snowflake.png");
-  hockeystick = loadImage("hockeystick.png");
+  star = loadImage("star.png");
 }
 
 
@@ -27,12 +34,14 @@ void draw() {
   drawForTheState();
 }
 
+//Draws the four quadrants
 void drawQuadrants() {
   stroke(0);
   line(width/2, 0, width/2, height );
   line(0, height/2, width, height/2);
 }
 
+//Changes the image in the quadrant that the mouse is in
 void changeSqaureColors() {
   ellipseMode(CENTER);
   if (mouseX <= width/2 && mouseY <= height/2) {
@@ -59,57 +68,63 @@ void changeSqaureColors() {
     
     
   } else if (mouseX >= width/2 && mouseY >= height/2) {
-      fill(random(0,255), 0, 255);
+      fill(100, 100, 200);
       rect(width/2, height/2, width, height);
-      image(hockeystick, 600, 600, hockeystick.width*0.3, hockeystick.height*0.3);
+      image(star, 600, 600, star.width*0.1, star.height*0.1);
   }
 }
 
+//Determines the state
 void determineState() {
- if  (mouseX <= width/2 && mouseY <= height/2 && mousePressed){
-   state = 1;
- }
-   
- else if (mouseX >= width/2 && mouseY <= height/2 && mousePressed){
-   state = 2;
- }
-   
- else if (mouseX <= width/2 && mouseY >= height/2 && mousePressed){
-   state = 3;
- }
-   
- else if (mouseX >= width/2 && mouseY >= height/2 && mousePressed){
-   state = 4;
- }
+  
+  if (state == 0){
+   if  (mouseX <= width/2 && mouseY <= height/2 && mousePressed){
+     state = 1;
+   }
+     
+   else if (mouseX >= width/2 && mouseY <= height/2 && mousePressed){
+     state = 2;
+   }
+     
+   else if (mouseX <= width/2 && mouseY >= height/2 && mousePressed){
+     state = 3;
+   }
+     
+   else if (mouseX >= width/2 && mouseY >= height/2 && mousePressed){
+     state = 4;
+   }
+}
 }
 
+//Draws the scence based on which state is chosen
 void drawForTheState() {
  imageMode(CENTER);
  if (state == 1){
   float sunLocation = constrain(mouseX, 200, 625);
-  background(255,0,0);
+  background(0);
   image(sun, 400, sunLocation, sun. width*0.7, sun.height*0.7); 
  }
  
  else if (state == 2){
   float moonLocation = constrain(mouseY, 175,625);
-  background(0, 0, 255);
+  background(60, 75, 103);
   image(moon, moonLocation, height/2, moon.width*0.5, moon.height*0.5);
  }
  
  else if (state == 3){
-  background(0);
-  image(snowflake, random(10,790), random(10,790), snowflake.width*0.2, snowflake.height*0.2);
+  background(mouseX,mouseX,mouseY);
+  image(snowflake, width/2, height/2,  snowflake.width, snowflake.height);
  }
  
  else if (state == 4){
   background(200,mouseY,mouseX); 
-  image(hockeystick, mouseX, mouseY, hockeystick.width*0.4, hockeystick.height*0.4);
+  image(star, pmouseX, pmouseY, star.width*0.1, star.height*0.1);
  }
 }
 
+//Returns to the start screen when the 'r' key is pressed
 void keyPressed(){
-  if (key == 'r'){
+  if (key == 'r' || key == 'R'){
    state = 0;
   }  
 }
